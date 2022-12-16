@@ -39,6 +39,7 @@ const posts = [
         "author": {
             "name": "Luca Formicola",
             "image": null
+           
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -56,14 +57,33 @@ const posts = [
     }
 ];
 
-let post = ``
 
+
+
+
+
+let post = ``
 posts.forEach(elem => {
-post += `<div class="post">
- <div class="post__header">
+    
+    let image;
+     //posso fare il check
+     if ( image == null )
+     {
+      //divido il nome in più stringhe separate dallo spazio
+       let nomeArr = elem.author.name.split(' ')
+        //stampare le iniziali dell'autore
+       image = `<div>${nomeArr[0][0]}. ${nomeArr[1][0]}.</div>`
+     }
+     else {
+      // stampare l'immagine
+       image = `<img src=${elem.author.image} alt="${elem.author.name}">`
+     }
+
+    post += `<div class="post">
+    <div class="post__header">
      <div class="post-meta">                    
          <div class="post-meta__icon">
-             <img class="profile-pic" src="${elem.author.image}" alt="Phil Mangione">                    
+             ${image}                
          </div>
          <div class="post-meta__data">
              <div class="post-meta__author">${elem.author.name}</div>
@@ -78,22 +98,29 @@ post += `<div class="post">
  <div class="post__footer">
      <div class="likes js-likes">
          <div class="likes__cta">
-             <a class="like-button  js-like-button" href="#" data-postid="1">
+             <a class="like-button  js-like-button" href="#" data-postid="${elem.id}">
                  <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                  <span class="like-button__label">Mi Piace</span>
              </a>
          </div>
          <div class="likes__counter">
-             Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
+             Piace a <b id="like-counter-${elem.id}" class="js-likes-counter">${elem.likes}</b> persone
          </div>
      </div> 
  </div>            
 </div>`
+document.getElementById(`container`).innerHTML= post
 
 });
 
+const MiPiace = document.getElementsByClassName(`js-like-button`)
+console.log(MiPiace)
 
+for(let i=0; i<MiPiace.length; i++){
+    MiPiace[i].addEventListener(`click`, function(){
+        console.log(this)
+    })
+}
 
-
-
-
+const postId = this.dataset.postid
+const likes = document.getElementById(`like-counter`)
